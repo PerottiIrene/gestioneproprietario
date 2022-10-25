@@ -22,6 +22,8 @@ public interface AutomobileService {
 	
 	public List<Automobile> listaAutomobiliConErrori() throws Exception;
 	
+	public List<Automobile> listaAutoCodFiscale (String input) throws Exception;
+	
 
 
 

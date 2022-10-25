@@ -42,6 +42,10 @@ public class TestProprietario {
 		
 		testListaAutomobiliConErrori(proprietarioService,automobileService);
 		System.out.println("In tabella proprietario ci sono " + proprietarioService.list().size() + " elementi.");
+		
+		testListaAutoCodFiscale(automobileService,proprietarioService);
+	    System.out.println("In tabella proprietario ci sono " + proprietarioService.list().size() + " elementi.");
+		
 	}
 
 	private static void testInserisciAutomobile(AutomobileService automobileService) throws Exception {
@@ -214,5 +218,35 @@ public class TestProprietario {
 		proprietarioService.delete(proprietario);
 		proprietarioService.delete(proprietario2);
 
+	}
+	
+	public static void testListaAutoCodFiscale(AutomobileService automobileService, ProprietarioService proprietarioService) throws Exception {
+		Date dataNascita = new SimpleDateFormat("dd-MM-yyyy").parse("03-01-2010");
+		Proprietario proprietario = new Proprietario("giuliano", "verdi", "gbr566", dataNascita);
+		proprietarioService.insert(proprietario);
+
+		Date dataNascita2 = new SimpleDateFormat("dd-MM-yyyy").parse("03-01-2009");
+		Proprietario proprietario2 = new Proprietario("giuliano", "verdi", "tdf566", dataNascita2);
+		proprietarioService.insert(proprietario2);
+		
+		Date dataImmatricolazione = new SimpleDateFormat("dd-MM-yyyy").parse("03-01-2020");
+		Automobile nuovaAutomobile = new Automobile("audi", "a4", "tdf566", dataImmatricolazione);
+		nuovaAutomobile.setProprietario(proprietario);
+		automobileService.insert(nuovaAutomobile);
+		
+		Date dataImmatricolazione2 = new SimpleDateFormat("dd-MM-yyyy").parse("03-01-2020");
+		Automobile nuovaAutomobile2 = new Automobile("audi", "a4", "tdf566", dataImmatricolazione2);
+		nuovaAutomobile2.setProprietario(proprietario2);
+		automobileService.insert(nuovaAutomobile2);
+		
+		List<Automobile> listaAuto=new ArrayList<Automobile>();
+		listaAuto=automobileService.listaAutoCodFiscale("gb");
+		if(listaAuto.size() != 1)
+			throw new RuntimeException("test fallito");
+		
+		System.out.println("test passed");
+		
+		
+		
 	}
 }

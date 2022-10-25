@@ -8,5 +8,7 @@ import it.prova.gestioneproprietario.model.Automobile;
 public interface AutomobileDAO extends IBaseDAO<Automobile> {
 	
 	public List<Automobile> listaAutomobiliConErrori() throws Exception;
+	
+	public List<Automobile> listaAutoCodFiscale(String input) throws Exception;
 
 }

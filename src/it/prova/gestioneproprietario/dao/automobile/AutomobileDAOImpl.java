@@ -57,4 +57,13 @@ public class AutomobileDAOImpl implements AutomobileDAO {
 		return query.getResultList();
 	}
 
+	@Override
+	public List<Automobile> listaAutoCodFiscale(String input) throws Exception {
+		TypedQuery<Automobile> query= entityManager.createQuery("select a from Automobile a join a.proprietario p where p.codiceFiscale like ?1"
+				,Automobile.class);
+		input="%";
+		query.setParameter(1, input);
+		return query.getResultList();
+	}
+
 }
