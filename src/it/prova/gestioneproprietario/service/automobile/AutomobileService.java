@@ -20,6 +20,8 @@ public interface AutomobileService {
 	
 	public void update(Automobile automobileInstance) throws Exception ;
 	
+	public List<Automobile> listaAutomobiliConErrori() throws Exception;
+	
 
 
 

@@ -1,7 +1,10 @@
 package it.prova.gestioneproprietario.test;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import it.prova.gestioneproprietario.model.Automobile;
 import it.prova.gestioneproprietario.model.Proprietario;
@@ -33,7 +36,12 @@ public class TestProprietario {
 		
 		testUpdateProprietario(proprietarioService);
 		System.out.println("In tabella proprietario ci sono " + proprietarioService.list().size() + " elementi.");
-
+		
+		contaProprietariConDataImmatricolazioneMaggioreDi(proprietarioService,automobileService);
+		System.out.println("In tabella proprietario ci sono " + proprietarioService.list().size() + " elementi.");
+		
+		testListaAutomobiliConErrori(proprietarioService,automobileService);
+		System.out.println("In tabella proprietario ci sono " + proprietarioService.list().size() + " elementi.");
 	}
 
 	private static void testInserisciAutomobile(AutomobileService automobileService) throws Exception {
@@ -134,5 +142,77 @@ public class TestProprietario {
 
 		System.out.println(".......testUpdateProprietario fine: PASSED.............");
 		
+	}
+	
+
+	private static void contaProprietariConDataImmatricolazioneMaggioreDi(ProprietarioService proprietarioService,AutomobileService automobileService) throws Exception {
+		
+		Date dataNascita = new SimpleDateFormat("dd-MM-yyyy").parse("03-01-2020");
+		Proprietario proprietario = new Proprietario("giuliano", "verdi", "tdf566", dataNascita);
+		proprietarioService.insert(proprietario);
+
+		Date dataNascita2 = new SimpleDateFormat("dd-MM-yyyy").parse("03-01-2020");
+		Proprietario proprietario2 = new Proprietario("giuliano", "verdi", "tdf566", dataNascita2);
+		proprietarioService.insert(proprietario2);
+		
+		Date dataImmatricolazione = new SimpleDateFormat("dd-MM-yyyy").parse("03-01-2020");
+		Automobile nuovaAutomobile = new Automobile("audi", "a4", "tdf566", dataImmatricolazione);
+		nuovaAutomobile.setProprietario(proprietario);
+		automobileService.insert(nuovaAutomobile);
+		
+		Date dataImmatricolazione2 = new SimpleDateFormat("dd-MM-yyyy").parse("03-01-2020");
+		Automobile nuovaAutomobile2 = new Automobile("audi", "a4", "tdf566", dataImmatricolazione2);
+		nuovaAutomobile2.setProprietario(proprietario2);
+		automobileService.insert(nuovaAutomobile2);
+		
+		Date dataInput= new SimpleDateFormat("dd-MM-yyyy").parse("03-01-2015");
+		
+		
+		int quantiProprietariConDataImmatricolazioneMaggioreDi=proprietarioService.contaProprietariConDataImmatricolazioneMaggioreDi(dataInput);
+		if(quantiProprietariConDataImmatricolazioneMaggioreDi != 2)
+			throw new RuntimeException("counter fallito");
+	
+		System.out.println("test contaProprietariConDataImmatricolazioneMaggioreDi passed");
+		
+		automobileService.delete(nuovaAutomobile2);
+		automobileService.delete(nuovaAutomobile);
+		proprietarioService.delete(proprietario);
+		proprietarioService.delete(proprietario2);
+
+	}
+	
+	public static void testListaAutomobiliConErrori(ProprietarioService proprietarioService,AutomobileService automobileService) throws Exception {
+		
+		Date dataNascita = new SimpleDateFormat("dd-MM-yyyy").parse("03-01-2010");
+		Proprietario proprietario = new Proprietario("giuliano", "verdi", "tdf566", dataNascita);
+		proprietarioService.insert(proprietario);
+
+		Date dataNascita2 = new SimpleDateFormat("dd-MM-yyyy").parse("03-01-2009");
+		Proprietario proprietario2 = new Proprietario("giuliano", "verdi", "tdf566", dataNascita2);
+		proprietarioService.insert(proprietario2);
+		
+		Date dataImmatricolazione = new SimpleDateFormat("dd-MM-yyyy").parse("03-01-2020");
+		Automobile nuovaAutomobile = new Automobile("audi", "a4", "tdf566", dataImmatricolazione);
+		nuovaAutomobile.setProprietario(proprietario);
+		automobileService.insert(nuovaAutomobile);
+		
+		Date dataImmatricolazione2 = new SimpleDateFormat("dd-MM-yyyy").parse("03-01-2020");
+		Automobile nuovaAutomobile2 = new Automobile("audi", "a4", "tdf566", dataImmatricolazione2);
+		nuovaAutomobile2.setProprietario(proprietario2);
+		automobileService.insert(nuovaAutomobile2);
+		
+		List<Automobile> listaAutoConErrori=new ArrayList<Automobile>();
+		listaAutoConErrori=automobileService.listaAutomobiliConErrori();
+		if(listaAutoConErrori.size() != 2)
+			throw new RuntimeException("counter fallito");
+		
+		System.out.println("test listaAutoConErrori passed");
+		
+		
+		automobileService.delete(nuovaAutomobile2);
+		automobileService.delete(nuovaAutomobile);
+		proprietarioService.delete(proprietario);
+		proprietarioService.delete(proprietario2);
+
 	}
 }

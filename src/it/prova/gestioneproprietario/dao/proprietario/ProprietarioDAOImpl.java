@@ -1,8 +1,10 @@
 package it.prova.gestioneproprietario.dao.proprietario;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import it.prova.gestioneproprietario.model.Automobile;
 import it.prova.gestioneproprietario.model.Proprietario;
@@ -51,6 +53,18 @@ public class ProprietarioDAOImpl implements ProprietarioDAO {
 		}
 
 		entityManager.remove(entityManager.merge(proprietarioInstance));
+	}
+
+	@Override
+	public int contaProprietariConDataImmatricolazioneMaggioreDi(Date dataInpt) throws Exception {
+		if(dataInpt == null) {
+			throw new Exception("Problema valore in input");
+		}
+		TypedQuery<Long> query= entityManager.createQuery("select count (proprietario_id) from Automobile a where annoImmatricolazione > ?1"
+				,Long.class);
+		
+		query.setParameter(1, new java.sql.Date(dataInpt.getYear()));
+		return query.getSingleResult().intValue();
 	}
 
 }

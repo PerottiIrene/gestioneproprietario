@@ -28,7 +28,7 @@ public class Proprietario {
 	@Column(name = "codiceFiscale")
 	private String codiceFiscale;
 	@Column(name = "dataDiNascita")
-	private Date datDiNascita;
+	private Date dataDiNascita;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "proprietario")
 	private Set<Automobile> automobili = new HashSet<>();
 
@@ -40,7 +40,7 @@ public class Proprietario {
 		this.nome = nome;
 		this.cognome = cognome;
 		this.codiceFiscale = codiceFiscale;
-		this.datDiNascita = datDiNascita;
+		this.dataDiNascita = datDiNascita;
 	}
 
 	public Proprietario(Long id, String nome, String cognome, String codiceFiscale, Date datDiNascita,
@@ -50,7 +50,7 @@ public class Proprietario {
 		this.nome = nome;
 		this.cognome = cognome;
 		this.codiceFiscale = codiceFiscale;
-		this.datDiNascita = datDiNascita;
+		this.dataDiNascita = datDiNascita;
 		this.automobili = automobili;
 	}
 	
@@ -94,11 +94,11 @@ public class Proprietario {
 	}
 
 	public Date getDatDiNascita() {
-		return datDiNascita;
+		return dataDiNascita;
 	}
 
 	public void setDatDiNascita(Date datDiNascita) {
-		this.datDiNascita = datDiNascita;
+		this.dataDiNascita = datDiNascita;
 	}
 
 	public Set<Automobile> getAutomobili() {

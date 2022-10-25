@@ -1,5 +1,6 @@
 package it.prova.gestioneproprietario.service.proprietario;
 
+import java.util.Date;
 import java.util.List;
 
 import it.prova.gestioneproprietario.dao.proprietario.ProprietarioDAO;
@@ -19,5 +20,7 @@ public interface ProprietarioService {
 		public void insert(Proprietario proprietarioInstance) throws Exception;
 		
 		public void delete(Proprietario proprietarioInstance) throws Exception ;
+		
+		public int contaProprietariConDataImmatricolazioneMaggioreDi(Date dataInpt) throws Exception;
 
 }

@@ -3,6 +3,7 @@ package it.prova.gestioneproprietario.dao.automobile;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import it.prova.gestioneproprietario.model.Automobile;
 
@@ -47,6 +48,13 @@ public class AutomobileDAOImpl implements AutomobileDAO {
 			throw new Exception("Problema valore in input");
 		}
 		entityManager.remove(entityManager.merge(automobileInstance));
+	}
+
+	@Override
+	public List<Automobile> listaAutomobiliConErrori() throws Exception {
+		TypedQuery<Automobile> query= entityManager.createQuery("select a from Automobile a join a.proprietario p where p.dataDiNascita > '2005-01-01'"
+				,Automobile.class);
+		return query.getResultList();
 	}
 
 }
